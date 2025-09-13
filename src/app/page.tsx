@@ -2,6 +2,12 @@ import { auth0 } from "@/lib/auth0";
 import './globals.css';
 import axios from "axios";
 
+interface Client {
+  client_uid: string;
+  first_name: string;
+  last_name: string;
+}
+
 export default async function Home() {
   const session = await auth0.getSession();
 
@@ -28,7 +34,17 @@ export default async function Home() {
     },
   });
 
-  const response = await axiosInstance.get('/api/clients?limit=10&offset=0');
+   let data: Client[] = [];
+   let errorMessage: string | null = null;
+   try {
+    const response = await axiosInstance.get<Client[]>('/api/clients?limit=10&offset=0');
+    data = response.data;
+   } catch (error: any) {
+    if (error.response) {
+      console.log(error.response.data);
+      errorMessage = error.response.data.error;
+    }
+   }
 
   // const apiConfig = getApiConfig(auth0);
   // console.log(apiConfig);
@@ -45,10 +61,12 @@ export default async function Home() {
         </a>
       </p>
       <ul>
-        {response.data.map((client: { client_uid: string; first_name: string; last_name: string }) => (
+        {data.map((client: Client) => (
           <li key={client.client_uid}>{client.first_name} {client.last_name}</li>
         ))} 
       </ul>
+
+      { errorMessage && <p>{errorMessage}</p>}
     </main>
   );
 }
