@@ -1,6 +1,6 @@
 import { auth0 } from "@/lib/auth0";
 import './globals.css';
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
 interface Client {
   client_uid: string;
@@ -39,10 +39,11 @@ export default async function Home() {
    try {
     const response = await axiosInstance.get<Client[]>('/api/clients?limit=10&offset=0');
     data = response.data;
-   } catch (error: any) {
-    if (error.response) {
-      console.log(error.response.data);
-      errorMessage = error.response.data.error;
+   } catch (error) {
+    if ( error as AxiosError) {
+      const axiosError = error as AxiosError;
+      console.log(axiosError.message);
+      errorMessage = axiosError.message;
     }
    }
 
