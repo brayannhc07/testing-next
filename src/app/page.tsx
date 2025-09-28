@@ -9,6 +9,7 @@ interface Client {
 }
 
 export default async function Home() {
+  const foo = process.env.FOO || 'default';
   const session = await auth0.getSession();
 
   // If no session, show sign-up and login buttons
@@ -21,6 +22,7 @@ export default async function Home() {
         <a href="/auth/login">
           <button>Log in</button>
         </a>
+        <p>FOO: {foo}</p>
       </main>
     );
   }
@@ -68,6 +70,8 @@ export default async function Home() {
       </ul>
 
       { errorMessage && <p>{errorMessage}</p>}
+
+      <p>FOO: {foo}</p>
     </main>
   );
 }
