@@ -28,7 +28,7 @@ export default async function Home() {
   const accessToken = await auth0.getAccessToken();
 
   const axiosInstance = axios.create({
-    baseURL: process.env.BACKEND_URL,
+    baseURL: process.env.PROPIO_BACKEND_URL,
     headers: {
       Authorization: accessToken.token,
     },
