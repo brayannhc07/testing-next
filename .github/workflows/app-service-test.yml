@@ -22,18 +22,17 @@ jobs:
         with:
           node-version: "20.x"
 
-      - name: Create .env file
-        run: |
-            echo "AUTH0_SECRET=${AUTH0_SECRET}" >> .env
-            echo "APP_BASE_URL=${APP_BASE_URL}" >> .env
-            echo "AUTH0_DOMAIN=${AUTH0_DOMAIN}" >> .env
-            echo "AUTH0_CLIENT_ID=${AUTH0_CLIENT_ID}" >> .env
-            echo "AUTH0_CLIENT_SECRET=${AUTH0_CLIENT_SECRET}" >> .env
-            echo "AUTH0_AUDIENCE=${AUTH0_AUDIENCE}" >> .env
-            echo "PROPIO_BACKEND_URL=${PROPIO_BACKEND_URL}" >> .env
-            echo "FOO=${FOO}" >> .env
-            
       - name: npm install, build, and test
+        env:
+          AUTH0_SECRET: ${{ vars.AUTH0_SECRET }}
+          APP_BASE_URL: ${{ vars.APP_BASE_URL }}
+          AUTH0_DOMAIN: ${{ vars.AUTH0_DOMAIN }}
+          AUTH0_CLIENT_ID: ${{ vars.AUTH0_CLIENT_ID }}
+          AUTH0_CLIENT_SECRET: ${{ vars.AUTH0_CLIENT_SECRET }}
+          AUTH0_AUDIENCE: ${{ vars.AUTH0_AUDIENCE }}
+          PROPIO_BACKEND_URL: ${{ vars.PROPIO_BACKEND_URL }}
+          FOO: ${{ vars.FOO }}
+
         run: |
           npm install
           npm run build
